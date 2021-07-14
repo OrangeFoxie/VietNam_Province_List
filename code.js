@@ -72,21 +72,17 @@ async function fetchAsync () {
 
     function listWards(distArr,wardArr) {
         let temp = "";  
-        for(var n=0; n<distArr.length; n++){
-            for(var m=0; m<distArr[n].length; m++){
-                for(var i=0; i<wardArr.length;i++){
-                    for(var j=0; j<wardArr[i].length; j++){
-                        temp += `<tr>`;
-                        // temp += `<td>${wardArr[n][m]['name']}</td>`;
-                        temp += `<td>${wardArr[i][j]['name']}</td>`;
-                        temp += `<td>${wardArr[i][j]['name']}</td>`;
-                        temp += `<td>${wardArr[i][j]['code']}</td>`;
-                        temp += `<td>${wardArr[i][j]['codename']}</td>`;
-                        temp += `<td>${wardArr[i][j]['division_type']}</td>`;
-                        temp += `<td>${wardArr[i][j]['short_codename']}</td>`;
-                        temp += `</tr>`; 
-                    }
-                }
+
+        for(var i=0; i<wardArr.length;i++){
+            for(var j=0; j<wardArr[i].length; j++){
+                temp += `<tr>`;
+                temp += `<td>${wardArr[i][j]['name']}</td>`;
+                temp += `<td>${wardArr[i][j]['name']}</td>`;
+                temp += `<td>${wardArr[i][j]['code']}</td>`;
+                temp += `<td>${wardArr[i][j]['codename']}</td>`;
+                temp += `<td>${wardArr[i][j]['division_type']}</td>`;
+                temp += `<td>${wardArr[i][j]['short_codename']}</td>`;
+                temp += `</tr>`; 
             }
         }
         document.getElementById('wardlist').innerHTML = temp;
