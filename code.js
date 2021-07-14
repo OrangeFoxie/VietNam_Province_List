@@ -1,6 +1,7 @@
 const api = 'https://provinces.open-api.vn/api/?depth=3';
 const cityArr = new Array();
 const distArr = new Array();
+const wardArr = new Array();
 
 async function fetchAsync () {
     let response = await fetch(api);
@@ -14,9 +15,25 @@ async function fetchAsync () {
 
     function main(data){
         getDist(data);
-
+        getWard(data);
         listProvinces(data);
         listDistricts(data,distArr);
+        listWards(distArr,wardArr);
+    }
+    
+    function getDist(data){
+        for(var i=0; i<data.length; i++){
+            distArr.push(data[i]['districts']);
+        }return distArr;
+    }
+
+    function getWard(data){
+        for(var i=0; i<data.length; i++){
+            for(var j=0; j<data[i]['districts'].length; j++){
+                wardArr.push(data[i]['districts'][j]['wards']);
+            }
+        }
+        return wardArr;
     }
     
     function listProvinces(data) {
@@ -53,8 +70,25 @@ async function fetchAsync () {
         document.getElementById('distlist').innerHTML = temp;
     }
 
-    function getDist(data){
-        for(var i=0; i<data.length; i++){
-            distArr.push(data[i]['districts']);
+    function listWards(distArr,wardArr) {
+        let temp = "";  
+        for(var n=0; n<distArr.length; n++){
+            for(var m=0; m<distArr[n].length; m++){
+                for(var i=0; i<wardArr.length;i++){
+                    for(var j=0; j<wardArr[i].length; j++){
+                        temp += `<tr>`;
+                        // temp += `<td>${wardArr[n][m]['name']}</td>`;
+                        temp += `<td>${wardArr[i][j]['name']}</td>`;
+                        temp += `<td>${wardArr[i][j]['name']}</td>`;
+                        temp += `<td>${wardArr[i][j]['code']}</td>`;
+                        temp += `<td>${wardArr[i][j]['codename']}</td>`;
+                        temp += `<td>${wardArr[i][j]['division_type']}</td>`;
+                        temp += `<td>${wardArr[i][j]['short_codename']}</td>`;
+                        temp += `</tr>`; 
+                    }
+                }
+            }
         }
+        document.getElementById('wardlist').innerHTML = temp;
     }
+
