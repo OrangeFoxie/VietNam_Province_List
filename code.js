@@ -6,21 +6,22 @@ const wardArr = new Array();
 async function fetchAsync () {
     let response = await fetch(api);
     let data = await response.json();
-    return data;
+    return(data);
   }
 
     fetchAsync()
-        .then(data => window.onload = main(data))       // if(data) => print data
+        .then(data => window.onload = main(data))     // if(data) => print data
         .catch(reason => console.log(reason.message)) // if(!data) => print error
 
     function main(data){
         getDist(data);
         getWard(data);
-        listProvinces(data);
+        listCity(data);
         listDistricts(data,distArr);
-        listWards(distArr,wardArr);
+        listWards(data);
     }
-    
+
+
     function getDist(data){
         for(var i=0; i<data.length; i++){
             distArr.push(data[i]['districts']);
@@ -35,13 +36,14 @@ async function fetchAsync () {
         }
         return wardArr;
     }
-    
-    function listProvinces(data) {
+
+
+    function listCity(data) {
         let temp = "";    
         data.forEach((itemData) => {
             temp += `<tr>`;
-            temp += `<td>${itemData['name']}</td>`;
             temp += `<td>${itemData['code']}</td>`;
+            temp += `<td>${itemData['name']}</td>`;
             temp += `<td>${itemData['codename']}</td>`;
             temp += `<td>${itemData['division_type']}</td>`;
             temp += `<td>${itemData['phone_code']}</td>`;
@@ -57,9 +59,10 @@ async function fetchAsync () {
             for(var i=0; i<distArr.length; i++){
                 for(var j=0; j<distArr[i].length; j++){
                     temp += `<tr>`;
+                    temp += `<td>${j+1}</td>`;
                     temp += `<td>${data[i]['name']}</td>`;
-                    temp += `<td>${distArr[i][j]['name']}</td>`;
                     temp += `<td>${distArr[i][j]['code']}</td>`;
+                    temp += `<td>${distArr[i][j]['name']}</td>`;
                     temp += `<td>${distArr[i][j]['codename']}</td>`;
                     temp += `<td>${distArr[i][j]['division_type']}</td>`;
                     temp += `<td>${distArr[i][j]['short_codename']}</td>`;
@@ -70,21 +73,26 @@ async function fetchAsync () {
         document.getElementById('distlist').innerHTML = temp;
     }
 
-    function listWards(distArr,wardArr) {
-        let temp = "";  
-
-        for(var i=0; i<wardArr.length;i++){
-            for(var j=0; j<wardArr[i].length; j++){
-                temp += `<tr>`;
-                temp += `<td>${wardArr[i][j]['name']}</td>`;
-                temp += `<td>${wardArr[i][j]['name']}</td>`;
-                temp += `<td>${wardArr[i][j]['code']}</td>`;
-                temp += `<td>${wardArr[i][j]['codename']}</td>`;
-                temp += `<td>${wardArr[i][j]['division_type']}</td>`;
-                temp += `<td>${wardArr[i][j]['short_codename']}</td>`;
-                temp += `</tr>`; 
+    function listWards(data){
+        let temp = "";
+        for (const property of data) {
+            var arr = new Array(property["districts"]);
+            for (var i =0; i<arr.length; i++) { 
+                for(var j =0;j<arr[i].length; j++) {              
+                    var a2 = new Array(arr[i][j]["wards"])
+                    for(var k =0; k<a2[0].length; k++){
+                        temp += `<tr>`;
+                        temp += `<td>${k+1}</td>`;
+                        temp += `<td>${property["name"]}</td>`;
+                        temp += `<td>${arr[i][j]["name"]}</td>`;
+                        temp += `<td>${a2[0][k]["name"]}</td>`;
+                        temp += `<td>${a2[0][k]["code"]}</td>`;
+                        temp += `<td>${a2[0][k]["codename"]}</td>`;
+                        temp += `<td>${a2[0][k]["division_type"]}</td>`;
+                        temp += `<td>${a2[0][k]["short_codename"]}</td>`;
+                        temp += `</tr>`; 
+                    }
+                }                    
             }
-        }
-        document.getElementById('wardlist').innerHTML = temp;
+        } document.getElementById('wardlist').innerHTML=temp;
     }
-
