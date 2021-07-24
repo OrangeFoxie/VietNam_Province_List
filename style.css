@@ -43,4 +43,10 @@ table {
     padding: 8px;
     text-align: center; }
 
+.links {
+  text-align: center; }
+  .links h4 a {
+    color: red;
+    text-decoration: none; }
+
 /*# sourceMappingURL=style.css.map */
